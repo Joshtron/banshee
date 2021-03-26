@@ -62,8 +62,6 @@ def prepare_files(path, ts, mode):
             if 'INV' in entry[3]:
                 inv_file_query.write('\t'.join(entry) + '\n')
 
-    #os.system('bedtools merge -d 50 -c 4,4,5 -o count,collapse,collapse -i temp_bed_files/del_query.bed > temp_bed_files/merged_del_query.bed')
-
     if mode == 'truth':
 
         del_file_truth = open('temp_bed_files/del_truth.bed', 'a+')

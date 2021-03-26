@@ -1,0 +1,3 @@
+[console_scripts]
+benchee = benchee.cli:start
+
