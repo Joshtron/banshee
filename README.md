@@ -30,5 +30,5 @@ python /path/to/benchee_project/setup.py develop
 ## Command line tool
 
 ```
-benshee --query query.vcf --truth truth.vcf benchmark
+benchee --query query.vcf --truth truth.vcf benchmark
 ```
