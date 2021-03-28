@@ -1,21 +1,27 @@
+# Imports
 import click
 from .identify_caller import prepare_files
 import pybedtools
 import glob, os
 
+# Command line options
 @click.group()
 @click.option('--query', help='Path to query vcf')
 @click.option('--truth', help='Path to truth vcf')
 @click.option('--ts', help='Specify truthset', required=False, default='')
 @click.pass_context
 
+# Main function that creates a ctx object which will come in handy later and takes the command line options as input
 def main(ctx, query: str, truth:str, ts: str):
 
+    # This folder will contain the temporary bed files that come from the VCF file
     os.system('mkdir temp_bed_files')
 
+    # This creates bed files for the query
     query_bed_file = prepare_files(query, ts, 'query')
     ctx.obj['query'] = query_bed_file
 
+    # This creates bed files for the truth
     truth_bed_file = prepare_files(truth, ts, 'truth')
     ctx.obj['truth'] = truth_bed_file
 
@@ -28,21 +34,27 @@ def benchmark(ctx):
 
     os.chdir('temp_bed_files')
 
+    # This goes through all query files and merges similar variants inside each file
+    # The result becomes a value in a dictionary with the key being the SV type
     for file in glob.glob('*query.bed'):
         temp_file = pybedtools.BedTool(file)
         merged_temp_file = temp_file.sort().merge(d=50, c=[4, 4, 5], o=['count', 'collapse', 'collapse'])
         query_dict[file.split('_')[0]]=merged_temp_file
 
+    # This goes through all truth files and merges similar variants inside each file
+    # The result becomes a value in a dictionary with the key being the SV type
     for file in glob.glob('*truth.bed*'):
         temp_file = pybedtools.BedTool(file)
         merged_temp_file = temp_file.sort().merge(d=50, c=[4, 4, 5], o=['count', 'collapse', 'collapse'])
         truth_dict[file.split('_')[0]]=merged_temp_file
 
+    # Here the actual intersect is performed
     del_intersect = query_dict['del'].intersect(truth_dict['del'], r=True, f=0.51, wa=True, wb=True)
     ins_intersect = query_dict['ins'].intersect(truth_dict['ins'], r=True, f=0.51, wa=True, wb=True)
     dup_intersect = query_dict['dup'].intersect(truth_dict['dup'], r=True, f=0.51, wa=True, wb=True)
     inv_intersect = query_dict['inv'].intersect(truth_dict['inv'], r=True, f=0.51, wa=True, wb=True)
 
+    # Cool math
     print('')
     print('Number of DELs in intersect: ', len(del_intersect))
     print('Number of INSs in intersect: ', len(ins_intersect))

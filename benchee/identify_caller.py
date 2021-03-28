@@ -1,16 +1,19 @@
+# Imports
 from .sniffles_func import sniffles_parser
 from .pbsv_func import pbsv_parser
 from .nstd152_func import nstd152_parser
 from .manta_func import manta_parser
 from .delly_func import delly_parser
 from .cnmops_func import cnmops_parser
-import os
 
+# This function recognizes the SV caller and uses the appropriate parse function that will extract
+# information for bed file creation
 def prepare_files(path, ts, mode):
 
     header_list = []
     variant_list = []
 
+    # This loop stores header and variants in different lists
     with open(path, 'r') as file:
         for line in file:
             if not line.lstrip().startswith('#'):
@@ -21,6 +24,8 @@ def prepare_files(path, ts, mode):
 
     sv_method = ''
 
+    # The caller gets recognized by unique format features
+    # VCF files get parsed by the appropriate parsing function
     if len(variant_list[0]) == 10:
         if 'Sniffles' in variant_list[0][7]:
             sv_method = 'sniffles'
@@ -45,6 +50,7 @@ def prepare_files(path, ts, mode):
             sv_method = 'nstd152'
             bed_file = nstd152_parser(path, ts)
 
+    # This creates temporary bed files for the query
     if mode == 'query':
 
         del_file_query = open('temp_bed_files/del_query.bed', 'a+')
@@ -62,6 +68,7 @@ def prepare_files(path, ts, mode):
             if 'INV' in entry[3]:
                 inv_file_query.write('\t'.join(entry) + '\n')
 
+    # This creates temporary bed files for the truth
     if mode == 'truth':
 
         del_file_truth = open('temp_bed_files/del_truth.bed', 'a+')
