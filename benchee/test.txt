@@ -1,0 +1,204 @@
+Query file used:  sniffles_np_merged_na19240.vcf
+
+Number of INVDUPs in query:  1
+Number of INVDUPs in truthset:  1
+Number of INVDUPs in intersect:  1
+
+TP (INVDUP):  1
+FP (INVDUP):  0
+FN (INVDUP):  0
+
+Precision (INVDUP):  1.0
+Recall (INVDUP):  1.0
+F1 (INVDUP):  1.0
+
+Number of INVs in query:  229
+Number of INVs in truthset:  229
+Number of INVs in intersect:  229
+
+TP (INV):  229
+FP (INV):  0
+FN (INV):  0
+
+Precision (INV):  1.0
+Recall (INV):  1.0
+F1 (INV):  1.0
+
+Number of DELs in query:  12183
+Number of DELs in truthset:  12183
+Number of DELs in intersect:  12183
+
+TP (DEL):  12183
+FP (DEL):  0
+FN (DEL):  0
+
+Precision (DEL):  1.0
+Recall (DEL):  1.0
+F1 (DEL):  1.0
+
+Number of INSs in query:  9048
+Number of INSs in truthset:  9048
+Number of INSs in intersect:  9048
+
+TP (INS):  9048
+FP (INS):  0
+FN (INS):  0
+
+Precision (INS):  1.0
+Recall (INS):  1.0
+F1 (INS):  1.0
+
+Number of DELINVs in query:  8
+Number of DELINVs in truthset:  8
+Number of DELINVs in intersect:  8
+
+TP (DELINV):  8
+FP (DELINV):  0
+FN (DELINV):  0
+
+Precision (DELINV):  1.0
+Recall (DELINV):  1.0
+F1 (DELINV):  1.0
+
+TP (ALL):  21469
+FP (ALL):  0
+FN (ALL):  0
+
+Precision (ALL):  1.0
+Recall (ALL):  1.0
+F1 (ALL):  1.0
+
+########################################
+
+Query file used:  manta_illumina_diploid_na19240.vcf
+
+Number of INSs in query:  2932
+Number of INSs in truthset:  9048
+Number of INSs in intersect:  1704
+
+TP (INS):  1704
+FP (INS):  7344
+FN (INS):  1228
+
+Precision (INS):  0.188
+Recall (INS):  0.581
+F1 (INS):  0.284
+
+Number of DELs in query:  4777
+Number of DELs in truthset:  12183
+Number of DELs in intersect:  3649
+
+TP (DEL):  3649
+FP (DEL):  8534
+FN (DEL):  1128
+
+Precision (DEL):  0.3
+Recall (DEL):  0.764
+F1 (DEL):  0.43
+
+TP (ALL):  5353
+FP (ALL):  15878
+FN (ALL):  2356
+
+Precision (ALL):  0.252
+Recall (ALL):  0.694
+F1 (ALL):  0.37
+
+########################################
+
+Query file used:  pbsv_np_merged_na19240.vcf
+
+Number of INVs in query:  101
+Number of INVs in truthset:  229
+Number of INVs in intersect:  57
+
+TP (INV):  57
+FP (INV):  172
+FN (INV):  44
+
+Precision (INV):  0.249
+Recall (INV):  0.564
+F1 (INV):  0.345
+
+Number of INSs in query:  17637
+Number of INSs in truthset:  9048
+Number of INSs in intersect:  6602
+
+TP (INS):  6602
+FP (INS):  2446
+FN (INS):  11035
+
+Precision (INS):  0.73
+Recall (INS):  0.374
+F1 (INS):  0.495
+
+Number of DELs in query:  36686
+Number of DELs in truthset:  12183
+Number of DELs in intersect:  10494
+
+TP (DEL):  10494
+FP (DEL):  1689
+FN (DEL):  26192
+
+Precision (DEL):  0.861
+Recall (DEL):  0.286
+F1 (DEL):  0.429
+
+TP (ALL):  17153
+FP (ALL):  4307
+FN (ALL):  37271
+
+Precision (ALL):  0.799
+Recall (ALL):  0.315
+F1 (ALL):  0.452
+
+########################################
+
+Query file used:  delly_illumina_na19240.vcf
+
+Number of INVs in query:  4148
+Number of INVs in truthset:  229
+Number of INVs in intersect:  59
+
+TP (INV):  59
+FP (INV):  170
+FN (INV):  4089
+
+Precision (INV):  0.258
+Recall (INV):  0.014
+F1 (INV):  0.027
+
+Number of INSs in query:  75
+Number of INSs in truthset:  9048
+Number of INSs in intersect:  69
+
+TP (INS):  69
+FP (INS):  8979
+FN (INS):  6
+
+Precision (INS):  0.008
+Recall (INS):  0.92
+F1 (INS):  0.015
+
+Number of DELs in query:  953
+Number of DELs in truthset:  12183
+Number of DELs in intersect:  566
+
+TP (DEL):  566
+FP (DEL):  11617
+FN (DEL):  387
+
+Precision (DEL):  0.046
+Recall (DEL):  0.594
+F1 (DEL):  0.086
+
+TP (ALL):  694
+FP (ALL):  20766
+FN (ALL):  4482
+
+Precision (ALL):  0.032
+Recall (ALL):  0.134
+F1 (ALL):  0.052
+
+########################################
+

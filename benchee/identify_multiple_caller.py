@@ -5,10 +5,11 @@ from .nstd152_func import nstd152_parser
 from .manta_func import manta_parser
 from .delly_func import delly_parser
 from .cnmops_func import cnmops_parser
+import os
 
 # This function recognizes the SV caller and uses the appropriate parse function that will extract
 # information for bed file creation
-def prepare_files(path, ts, mode):
+def prepare_multiple_files(path, ts, mode, query_count):
 
     header_list = []
     variant_list = []
@@ -55,23 +56,16 @@ def prepare_files(path, ts, mode):
             sv_method = 'nstd152'
             bed_file = nstd152_parser(path, ts)
 
+    os.mkdir('temp_bed_files/query_'+str(query_count))
 
     # This creates temporary bed files for the query
     if mode == 'query':
 
         for sv_type in sv_types:
-            current_sv_file = open(str('temp_bed_files/' + sv_type + '_query.bed'), 'a+')
+            current_sv_file = open('temp_bed_files/query_'+str(query_count) + '/' + str(sv_type + '_query_' + str(query_count) + '.bed'), 'a+')
             for entry in bed_file:
                 if sv_type == entry[3].replace('/',''):
                     current_sv_file.write('\t'.join(entry) + '\n')
 
-    # This creates temporary bed files for the truth
-    if mode == 'truth':
-
-        for sv_type in sv_types:
-            current_sv_file = open(str('temp_bed_files/' + sv_type + '_truth.bed'), 'a+')
-            for entry in bed_file:
-                if sv_type == entry[3].replace('/',''):
-                    current_sv_file.write('\t'.join(entry) + '\n')
 
     return(bed_file)
