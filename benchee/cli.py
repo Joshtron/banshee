@@ -1,10 +1,15 @@
 # To Do
 # Are there other seperators in the info field than ;
-
+# Genotype comparison
+# Make ranges of start and end
+# nstd152 if chrMT = ChrM
+# BNDs für sniffles parser
+# Fix delly hg002
 
 # Imports
 import click
 from .identify_caller import prepare_files
+from .mf_parser import mf_parser
 from .identify_multiple_caller import prepare_multiple_files
 import pybedtools
 import glob, os
@@ -18,7 +23,7 @@ import glob, os
 @click.pass_context
 
 # Main function that creates a ctx object which will come in handy later and takes the command line options as input
-def main(ctx, query: str, truth:str, ts: str, mq: str):
+def main(ctx, query: str, truth: str, ts: str, mq: str):
 
     if mq:
 
@@ -200,6 +205,76 @@ def multibenchmark(ctx):
         print()
 
         mq_count += 1
+
+    os.chdir('..')
+    os.system('rm -r temp_bed_files')
+
+@main.command()
+@click.pass_context
+def cnvbenchmark(ctx):
+
+    query_dict = {}
+    truth_dict = {}
+
+    os.chdir('temp_bed_files')
+
+    # This goes through all query files and merges similar variants inside each file
+    # The result becomes a value in a dictionary with the key being the SV type
+    for file in glob.glob('*query.bed'):
+        if not os.stat(file).st_size == 0:
+            temp_file = pybedtools.BedTool(file)
+            merged_temp_file = temp_file.sort().merge(d=50, c=[4, 4, 5], o=['count', 'collapse', 'collapse'])
+            query_dict[file.split('_')[0]] = merged_temp_file
+
+
+    # This goes through all truth files and merges similar variants inside each file
+    # The result becomes a value in a dictionary with the key being the SV type
+    for file in glob.glob('*truth.bed*'):
+        if not os.stat(file).st_size == 0:
+            temp_file = pybedtools.BedTool(file)
+            merged_temp_file = temp_file.sort().merge(d=50, c=[4, 4, 5], o=['count', 'collapse', 'collapse'])
+            truth_dict[file.split('_')[0]] = merged_temp_file
+
+    query_keys = list(query_dict.keys())
+    truth_keys = list(truth_dict.keys())
+    intersect_keys = list(set(truth_keys) & set(query_keys))
+
+    print()
+
+    tp_all = 0
+    fp_all = 0
+    fn_all = 0
+
+    for sv_type in intersect_keys:
+        intersect = query_dict[sv_type].intersect(truth_dict[sv_type], f=0.51, wa=True, wb=True)
+        print('Number of ' + sv_type + 's in query: ', len(query_dict[sv_type]))
+        print('Number of ' + sv_type + 's in truthset: ', len(truth_dict[sv_type]))
+        print('Number of ' + sv_type + 's in intersect: ', len(intersect))
+        print()
+        tp = len(intersect)
+        tp_all += tp
+        fp = len(truth_dict[sv_type]) - len(intersect)
+        fp_all += fp
+        fn = len(query_dict[sv_type]) - len(intersect)
+        fn_all += fn
+        print('TP (' + sv_type + '): ', tp)
+        print('FP (' + sv_type + '): ', fp)
+        print('FN (' + sv_type + '): ', fn)
+        print()
+        print('Precision (' + sv_type + '): ', round(tp / (tp + fp), 3))
+        print('Recall (' + sv_type + '): ', round(tp / (tp + fn), 3))
+        print('F1 (' + sv_type + '): ', round((2 * (tp / (tp + fp)) * (tp / (tp + fn))) / (
+                    (tp / (tp + fp)) + (tp / (tp + fn))), 3))
+        print()
+
+    print('TP (ALL): ', tp_all)
+    print('FP (ALL): ',fp_all)
+    print('FN (ALL): ',fn_all)
+    print()
+    print('Precision (ALL): ', round(tp_all/(tp_all+fp_all),3))
+    print('Recall (ALL): ', round(tp_all/(tp_all+fn_all),3))
+    print('F1 (ALL): ', round((2*(tp_all/(tp_all+fp_all))*(tp_all/(tp_all+fn_all)))/((tp_all/(tp_all+fp_all))+(tp_all/(tp_all+fn_all))), 3))
+    print()
 
     os.chdir('..')
     os.system('rm -r temp_bed_files')

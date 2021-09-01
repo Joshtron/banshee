@@ -5,6 +5,7 @@ from .nstd152_func import nstd152_parser
 from .manta_func import manta_parser
 from .delly_func import delly_parser
 from .cnmops_func import cnmops_parser
+from .mf_parser import mf_parser
 
 # This function recognizes the SV caller and uses the appropriate parse function that will extract
 # information for bed file creation
@@ -29,6 +30,7 @@ def prepare_files(path, ts, mode):
 
     sv_method = ''
 
+    '''
     # The caller gets recognized by unique format features
     # VCF files get parsed by the appropriate parsing function
     if len(variant_list[0]) == 10:
@@ -55,6 +57,9 @@ def prepare_files(path, ts, mode):
             sv_method = 'nstd152'
             bed_file = nstd152_parser(path, ts)
 
+    '''
+
+    bed_file = mf_parser(path)
 
     # This creates temporary bed files for the query
     if mode == 'query':

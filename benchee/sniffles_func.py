@@ -43,13 +43,11 @@ def sniffles_parser(path):
         return end_of_variant
 
     #Same for the sv-type.
-    #
     def get_sv_type(variant_list_entry):
         if not 'SVTYPE=BND' in variant_list_entry[7]:
             end_position = variant_list_entry[7].split(';')[8]
             sv_type = end_position[7:]
             return sv_type
-
 
     number_of_imprecise_EBV = 0
 
